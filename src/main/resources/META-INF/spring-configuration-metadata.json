@@ -1,0 +1,32 @@
+{
+  "properties": [
+    {
+      "name": "java.util.logging.FileHandler.level",
+      "type": "java.lang.String"
+    },
+    {
+      "name": "java.util.logging.FileHandler.formatter",
+      "type": "java.lang.String"
+    },
+    {
+      "name": "java.util.logging.FileHandler.append",
+      "type": "java.lang.Boolean"
+    },
+    {
+      "name": "java.util.logging.FileHandler.pattern",
+      "type": "java.lang.String"
+    },
+    {
+      "name": "java.util.logging.ConsoleHandler.level",
+      "type": "java.lang.String"
+    },
+    {
+      "name": "java.util.logging.ConsoleHandler.formatter",
+      "type": "java.lang.String"
+    },
+    {
+      "name": "handlers",
+      "type": "java.lang.String"
+    }
+  ]
+}
