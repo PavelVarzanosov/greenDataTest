@@ -24,12 +24,14 @@ public class H2BankServiceImpl implements IBankService {
 
     public Bank saveBank(String name, int bik) {
         Bank bank = new Bank(name, bik);
+
         this.bankRep.save(bank);
         return bank;
     }
 
     public Bank getBankById(UUID id) throws NotFoundException {
         Optional<Bank> bank = this.bankRep.findById(id);
+
         if(bank.isPresent()){
             return bank.get();
         }
@@ -41,6 +43,7 @@ public class H2BankServiceImpl implements IBankService {
     public Bank updateBank(Bank bank) throws NotFoundException {
         final Object lock = new Object();
         Optional<Bank> OptionalBank = this.bankRep.findById(bank.getBankId());
+
         synchronized(lock) {
             if (OptionalBank.isPresent()) {
                 Bank savedBank = this.bankRep.save(bank);
@@ -76,7 +79,7 @@ public class H2BankServiceImpl implements IBankService {
                 try {
                     if(bank.satisfies(finalCommonSpecification)) finalBankList.add(bank);
                 } catch (Exception e) {
-                    //e.printStackTrace();
+                    //TODO прокинуть exception выше
                 }
             });
         } else {
@@ -99,6 +102,7 @@ public class H2BankServiceImpl implements IBankService {
     private Specification<Bank> getCommonSpecification(FilterDTO filterDTO) {
         FilterCondition filter = filterDTO.getFilterConditionList().get(0);
         Specification<Bank> commonSpecification = new SpecificationAbstractImpl<Bank>(filter.getFieldName(), filter.getOperator(), filter.getValueCondition());
+
         for (int i = 1; i< filterDTO.getFilterConditionList().size(); i++) {
             filter = filterDTO.getFilterConditionList().get(i);
             commonSpecification = commonSpecification.concatenate(filter.getConcatenateType(),

@@ -65,7 +65,7 @@ class DepositControllerTest {
     void newDepositTest() throws Exception {
         ObjectMapper mapper = new ObjectMapper();
         Date depositDate = new Date();
-        Client client = new Client("clientName", "shortName", "address", LegalForms.IP);
+        Client client = new Client("clientName", "shortName", "address", LegalForms.LTD);
         Bank bank = new Bank("bankName", 1);
         Deposit deposit = new Deposit(10, 10, depositDate, client, bank);
         doReturn(deposit).when(depositServiceMock)
@@ -94,7 +94,7 @@ class DepositControllerTest {
     void newDepositWithExceptionTest() throws Exception {
         ObjectMapper mapper = new ObjectMapper();
         Date depositDate = new Date();
-        Client client = new Client("clientName", "shortName", "address", LegalForms.IP);
+        Client client = new Client("clientName", "shortName", "address", LegalForms.LTD);
         Bank bank = new Bank("bankName", 1);
         when(depositServiceMock
                 .saveDeposit(eq(10), eq(10), eq(depositDate), any(UUID.class), any(UUID.class)))
@@ -122,7 +122,7 @@ class DepositControllerTest {
     void getDepositByIdTest() throws Exception {
         ObjectMapper mapper = new ObjectMapper();
         Date depositDate = new Date();
-        Client client = new Client("clientName", "shortName", "address", LegalForms.IP);
+        Client client = new Client("clientName", "shortName", "address", LegalForms.LTD);
         Bank bank = new Bank("bankName", 1);
         Deposit deposit = new Deposit(10, 10, depositDate, client, bank);
         when(depositServiceMock.getDepositById(deposit.getDepositId())).thenReturn(deposit);
@@ -153,7 +153,7 @@ class DepositControllerTest {
     void updateDeposit() throws Exception {
         ObjectMapper mapper = new ObjectMapper();
         Date depositDate = new Date();
-        Client client = new Client("clientName", "shortName", "address", LegalForms.IP);
+        Client client = new Client("clientName", "shortName", "address", LegalForms.LTD);
         Bank bank = new Bank("bankName", 1);
         DepositDTO updatedDepositDTO = new DepositDTO(10, 10, depositDate, client.getClientId(), bank.getBankId());
         Deposit updatedDeposit = new Deposit(10, 10, depositDate, client, bank);
@@ -177,7 +177,7 @@ class DepositControllerTest {
     void updateDepositWithExceptionTest() throws Exception {
         ObjectMapper mapper = new ObjectMapper();
         Date depositDate = new Date();
-        Client client = new Client("clientName", "shortName", "address", LegalForms.IP);
+        Client client = new Client("clientName", "shortName", "address", LegalForms.LTD);
         Bank bank = new Bank("bankName", 1);
         Deposit updatedDeposit = new Deposit(10, 10, depositDate, client, bank);
         when(depositServiceMock.updateDeposit(any(DepositDTO.class))).thenThrow(new NotFoundException("Deposit with id = " + updatedDeposit.getDepositId().toString() +" not found"));
@@ -224,7 +224,7 @@ class DepositControllerTest {
     void getDepositReverseTest() throws Exception {
         ObjectMapper mapper = new ObjectMapper();
         Bank bank = new Bank("name",1);
-        Client client = new Client("name", "shortName", "address", LegalForms.IP);
+        Client client = new Client("name", "shortName", "address", LegalForms.LTD);
         Deposit deposit = new Deposit(10, 12, new Date(), client, bank);
         Deposit deposit2 = new Deposit(15, 6, new Date(), client, bank);
         Deposit deposit3 = new Deposit(5, 3, new Date(), client, bank);

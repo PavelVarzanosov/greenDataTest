@@ -5,7 +5,6 @@ import com.greenData.bank.specification.enums.Operator;
 public class IntegerComparison {
     public static boolean comparisonIntegerValues(Operator operator, Integer firstInteger, Integer secondInteger) {
         boolean comparisonResult;
-        System.out.println("equal integer " + firstInteger + " " + secondInteger);
         switch (operator) {
             case EQUAL:
                 comparisonResult = firstInteger.equals(secondInteger);

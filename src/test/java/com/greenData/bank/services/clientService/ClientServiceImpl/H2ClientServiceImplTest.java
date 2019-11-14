@@ -42,10 +42,10 @@ class H2ClientServiceImplTest {
     @BeforeEach
     void setUp() {
         MockitoAnnotations.initMocks(this);
-        client = clientService.saveClient("clientName", "shortClientName", "address", LegalForms.IP);
-        client1 = clientService.saveClient("clientName1", "shortClientName1", "address1", LegalForms.OOO);
-        client2 = clientService.saveClient("clientName2", "shortClientName2", "address2", LegalForms.IP);
-        client3 = clientService.saveClient("clientName3", "shortClientName3", "address3", LegalForms.IP);
+        client = clientService.saveClient("clientName", "shortClientName", "address", LegalForms.LTD);
+        client1 = clientService.saveClient("clientName1", "shortClientName1", "address1", LegalForms.OFFSHOR);
+        client2 = clientService.saveClient("clientName2", "shortClientName2", "address2", LegalForms.LTD);
+        client3 = clientService.saveClient("clientName3", "shortClientName3", "address3", LegalForms.LTD);
     }
 
     @AfterEach
@@ -84,7 +84,7 @@ class H2ClientServiceImplTest {
 
     @Test
     void testUpdateBankByIdWithException() {
-        Client notExistClient = new Client("noNameClient", "shortClientName", "address", LegalForms.IP);
+        Client notExistClient = new Client("noNameClient", "shortClientName", "address", LegalForms.LTD);
         try {
             Client updatedClient = clientService.updateClient(client);
         }
@@ -95,7 +95,7 @@ class H2ClientServiceImplTest {
 
     @Test
     void testDeleteClientByIdWithException() {
-        Client notExistClient = new Client("noNameClient", "shortClientName", "address", LegalForms.IP);
+        Client notExistClient = new Client("noNameClient", "shortClientName", "address", LegalForms.LTD);
         try {
             clientService.deleteById(notExistClient.getClientId());
         }
@@ -140,10 +140,16 @@ class H2ClientServiceImplTest {
         ArrayList<Client> clientList = new ArrayList<>();
         clientList.add(client1);
         clientList.add(client2);
-        FilterDTO filterDTO = new FilterDTO( new ArrayList<>(), false, 1, 2);
+        FilterDTO filterDTO = new FilterDTO( new ArrayList<>(), false, 1, 100);
 
         List<Client> getClients = clientService.getClients(filterDTO);
 
+        System.out.println("testGetClientsOffset getClients " + getClients.size());
+        System.out.println("testGetClientsOffset " + clientList.size());
+        System.out.println("testGetClientsOffset getClients " + getClients.get(0).getClientId());
+        System.out.println("testGetClientsOffset " + clientList.get(0).getClientId());
+        System.out.println("testGetClientsOffset getClients " + getClients.get(1).getClientId());
+        System.out.println("testGetClientsOffset " + clientList.get(1).getClientId());
         assertEquals(clientList.get(0).getClientId(), getClients.get(0).getClientId());
         assertEquals(clientList.get(1).getClientId(), getClients.get(1).getClientId());
     }
@@ -155,7 +161,7 @@ class H2ClientServiceImplTest {
         clientList.add(client2);
         ArrayList<FilterCondition> filterConditionList = new ArrayList<>();
         filterConditionList.add(new FilterCondition("name", "clientName2", Operator.EQUAL, ConcatenateType.OR));
-        filterConditionList.add(new FilterCondition("legalForm", "OOO", Operator.EQUAL, ConcatenateType.OR));
+        filterConditionList.add(new FilterCondition("legalForm", "OFFSHOR", Operator.EQUAL, ConcatenateType.OR));
         FilterDTO filterDTO = new FilterDTO(filterConditionList, false, 0, 3);
 
         List<Client> getClients = clientService.getClients(filterDTO);

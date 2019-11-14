@@ -1,6 +1,5 @@
 package com.greenData.bank.controllers;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.greenData.bank.models.Bank;
 import com.greenData.bank.modelsDTO.FilterDTO;
 import com.greenData.bank.services.bankService.IBankService;
@@ -71,12 +70,7 @@ public class BankController {
 
     @PostMapping("/getBanks")
     public ResponseEntity<List<Bank>> getBanks(@RequestBody FilterDTO filterDTO) {
-        List<Bank> bankList = null;
-        try {
-            bankList = bankService.getBanks(filterDTO);
-        } catch (JsonProcessingException e) {
-            LOGGER.info(e.getMessage());
-        }
+        List<Bank> bankList = bankService.getBanks(filterDTO);
         return ResponseEntity.ok(bankList);
     }
 }

@@ -7,7 +7,7 @@ public class DepositDTO {
 
     private UUID depositId;
     private int percent;
-    private int dateInMonth;
+    private int periodInMonth;
     private Date openingDate;
     private UUID clientId;
     private UUID bankId;
@@ -16,9 +16,9 @@ public class DepositDTO {
 
     }
 
-    public DepositDTO (int percent, int dateInMonth, Date openingDate, UUID clientId, UUID bankId){
+    public DepositDTO (int percent, int periodInMonth, Date openingDate, UUID clientId, UUID bankId){
         this.percent = percent;
-        this.dateInMonth = dateInMonth;
+        this.periodInMonth = periodInMonth;
         this.openingDate = openingDate;
         this.clientId = clientId;
         this.bankId = bankId;
@@ -33,8 +33,8 @@ public class DepositDTO {
         return this.percent;
     }
 
-    public int getDateInMonth() {
-        return this.dateInMonth;
+    public int getPeriodInMonth() {
+        return this.periodInMonth;
     }
 
     public Date getOpeningDate() {

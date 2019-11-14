@@ -15,7 +15,7 @@ public class Deposit implements Comparable{
     @Column(name = "PERCENT", nullable = false)
     private int percent;
     @Column(name = "DATE_IN_MONTH", nullable = false)
-    private int dateInMonth;
+    private int periodInMonth;
     @Column(name = "OPENING_DATE", nullable = false)
     private Date openingDate;
     @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
@@ -29,9 +29,9 @@ public class Deposit implements Comparable{
 
     }
 
-    public Deposit (int percent, int dateInMonth, Date openingDate, Client client, Bank bank){
+    public Deposit (int percent, int periodInMonth, Date openingDate, Client client, Bank bank){
         this.percent = percent;
-        this.dateInMonth = dateInMonth;
+        this.periodInMonth = periodInMonth;
         this.openingDate = openingDate;
         this.client = client;
         this.bank = bank;
@@ -44,10 +44,6 @@ public class Deposit implements Comparable{
 
     public int getPercent() {
         return this.percent;
-    }
-
-    public int getDateInMonth() {
-        return this.dateInMonth;
     }
 
     public Date getOpeningDate() {
@@ -69,8 +65,8 @@ public class Deposit implements Comparable{
     @Override
     public int compareTo(Object o) {
         Deposit deposit = (Deposit)o;
-        return deposit.getOpeningDate().getTime() != this.getOpeningDate().getTime()
-                ? Long.compare(deposit.getOpeningDate().getTime(), this.getOpeningDate().getTime())
-                : Integer.compare(deposit.getPercent(), this.getPercent());
+        return this.getPercent() != deposit.getPercent()
+                ? Integer.compare(this.getPercent(), deposit.getPercent())
+                : Long.compare( this.getOpeningDate().getTime(), deposit.getOpeningDate().getTime());
     }
 }

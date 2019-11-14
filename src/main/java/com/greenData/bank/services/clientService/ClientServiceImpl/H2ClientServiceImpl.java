@@ -25,12 +25,14 @@ public class H2ClientServiceImpl implements IClientService {
 
     public Client saveClient(String name, String shortName, String address, LegalForms legalForm) {
         Client client = new Client(name, shortName, address, legalForm);
+
         this.clientRep.save(client);
         return client;
     }
 
     public Client getClientById(UUID id) throws NotFoundException {
         Optional<Client> client = this.clientRep.findById(id);
+
         if(client.isPresent()){
             return client.get();
         }
@@ -42,6 +44,7 @@ public class H2ClientServiceImpl implements IClientService {
     public Client updateClient(Client client) throws NotFoundException {
         final Object lock = new Object();
         Optional<Client> optionalClient = this.clientRep.findById(client.getClientId());
+
         synchronized(lock) {
             if (optionalClient.isPresent()) {
                 Client savedClient = this.clientRep.save(client);
@@ -70,13 +73,14 @@ public class H2ClientServiceImpl implements IClientService {
         Iterable<Client> iterableClient = clientRep.findAll();
         List<Client> clientList;
         List<Client> finalClientList = new ArrayList<>();
+
         if(filterDTO.getFilterConditionList().size() > 0) {
             Specification<Client> finalCommonSpecification = getCommonSpecification(filterDTO);
             iterableClient.forEach((client) -> {
                 try {
                     if(client.satisfies(finalCommonSpecification)) finalClientList.add(client);
                 } catch (Exception e) {
-                    //e.printStackTrace();
+                    //TODO прокинуть exception выше
                 }
             });
         } else {
@@ -97,6 +101,7 @@ public class H2ClientServiceImpl implements IClientService {
     private Specification<Client> getCommonSpecification(FilterDTO filterDTO) {
         FilterCondition filter = filterDTO.getFilterConditionList().get(0);
         Specification<Client> commonSpecification = new SpecificationAbstractImpl<Client>(filter.getFieldName(), filter.getOperator(), filter.getValueCondition());
+
         for (int i = 1; i< filterDTO.getFilterConditionList().size(); i++) {
             filter = filterDTO.getFilterConditionList().get(i);
             commonSpecification = commonSpecification.concatenate(filter.getConcatenateType(),

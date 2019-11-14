@@ -5,15 +5,15 @@ import com.greenData.bank.specification.abstractSpecification.Specification;
 
 public class OrSpecification<T> extends AbstractSpecification<T> {
 
-    private Specification<T> spec1;
-    private Specification<T> spec2;
+    private Specification<T> specLeft;
+    private Specification<T> specRight;
 
-    public OrSpecification(final Specification<T> spec1, final Specification<T> spec2) {
-        this.spec1 = spec1;
-        this.spec2 = spec2;
+    public OrSpecification(final Specification<T> specLeft, final Specification<T> specRight) {
+        this.specLeft = specLeft;
+        this.specRight = specRight;
     }
 
     public boolean isSatisfiedBy(final T t) throws Exception {
-        return spec1.isSatisfiedBy(t) || spec2.isSatisfiedBy(t);
+        return specLeft.isSatisfiedBy(t) || specRight.isSatisfiedBy(t);
     }
 }

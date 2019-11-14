@@ -1,6 +1,5 @@
 package com.greenData.bank.services.bankService;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.greenData.bank.models.Bank;
 import com.greenData.bank.modelsDTO.FilterDTO;
 import javassist.NotFoundException;
@@ -20,5 +19,5 @@ public interface IBankService {
 
     void deleteAll();
 
-    List<Bank> getBanks(FilterDTO filterDTO) throws JsonProcessingException;
+    List<Bank> getBanks(FilterDTO filterDTO);
 }

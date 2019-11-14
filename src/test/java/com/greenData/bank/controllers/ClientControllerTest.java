@@ -61,28 +61,28 @@ class ClientControllerTest {
     @Test
     void testNewClient() throws Exception {
         ObjectMapper mapper = new ObjectMapper();
-        Client client = new Client("clientName", "shortName", "address", LegalForms.IP);
-        doReturn(client).when(clientServiceMock).saveClient("clientName", "shortName", "address", LegalForms.IP);
+        Client client = new Client("clientName", "shortName", "address", LegalForms.LTD);
+        doReturn(client).when(clientServiceMock).saveClient("clientName", "shortName", "address", LegalForms.LTD);
 
         mockMvc.perform(
                 post("/client/newClient")
                         .param("name", "clientName")
                         .param("shortName", "shortName")
                         .param("address","address")
-                        .param("legalForm", LegalForms.IP.toString())
+                        .param("legalForm", LegalForms.LTD.toString())
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .accept(MediaType.APPLICATION_JSON)
         )
                 .andExpect(status().isOk())
                 .andExpect(content().string(mapper.writeValueAsString(client)));
 
-        verify(clientServiceMock, times(1)).saveClient("clientName", "shortName", "address", LegalForms.IP);
+        verify(clientServiceMock, times(1)).saveClient("clientName", "shortName", "address", LegalForms.LTD);
         verifyNoMoreInteractions(clientServiceMock);
     }
 
     @Test
     void testGetClientById() throws Exception {
-        Client client = new Client("clientName", "shortName", "address", LegalForms.IP);
+        Client client = new Client("clientName", "shortName", "address", LegalForms.LTD);
         when(clientServiceMock.getClientById(client.getClientId())).thenReturn(client);
 
         mockMvc.perform(
@@ -92,7 +92,7 @@ class ClientControllerTest {
                 .andExpect(jsonPath("$.name").value("clientName"))
                 .andExpect(jsonPath("$.shortName").value("shortName"))
                 .andExpect(jsonPath("$.address").value("address"))
-                .andExpect(jsonPath("$.legalForm").value(LegalForms.IP.toString()));
+                .andExpect(jsonPath("$.legalForm").value(LegalForms.LTD.toString()));
 
         verify(clientServiceMock, times(1)).getClientById(client.getClientId());
         verifyNoMoreInteractions(clientServiceMock);
@@ -114,7 +114,7 @@ class ClientControllerTest {
     @Test
     void testUpdateClient() throws Exception {
         ObjectMapper mapper = new ObjectMapper();
-        Client updatedClient = new Client("clientName", "shortName", "address", LegalForms.IP);
+        Client updatedClient = new Client("clientName", "shortName", "address", LegalForms.LTD);
         when(clientServiceMock.updateClient(any(Client.class))).thenReturn(updatedClient);
 
         MockHttpServletRequestBuilder builder =
@@ -134,7 +134,7 @@ class ClientControllerTest {
     @Test
     void testUpdateClientWithException() throws Exception {
         ObjectMapper mapper = new ObjectMapper();
-        Client updatedClient = new Client("clientName", "shortName", "address", LegalForms.IP);
+        Client updatedClient = new Client("clientName", "shortName", "address", LegalForms.LTD);
         when(clientServiceMock.updateClient(any(Client.class))).thenThrow(new NotFoundException("Client with id = " + updatedClient.getClientId().toString() +" not found"));
 
         MockHttpServletRequestBuilder builder =
@@ -178,9 +178,9 @@ class ClientControllerTest {
     @Test
     void testGetClientReverse() throws Exception {
         ObjectMapper mapper = new ObjectMapper();
-        Client client = new Client("name", "shortName", "address", LegalForms.IP);
-        Client client2 = new Client("name2", "shortName2", "address2", LegalForms.OOO);
-        Client client3 = new Client("name3", "shortName3", "address3", LegalForms.IP);
+        Client client = new Client("name", "shortName", "address", LegalForms.LTD);
+        Client client2 = new Client("name2", "shortName2", "address2", LegalForms.OFFSHOR);
+        Client client3 = new Client("name3", "shortName3", "address3", LegalForms.LTD);
         ArrayList<Client> clientList = new ArrayList<>();
         clientList.add(client);
         clientList.add(client2);

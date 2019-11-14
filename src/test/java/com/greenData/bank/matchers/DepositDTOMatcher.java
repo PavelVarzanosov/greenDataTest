@@ -14,7 +14,7 @@ public class DepositDTOMatcher implements ArgumentMatcher<DepositDTO> {
     @Override
     public boolean matches(DepositDTO right) {
         return left.getDepositId().equals(right.getDepositId()) &&
-                left.getDateInMonth() == right.getDateInMonth() &&
+                left.getPeriodInMonth() == right.getPeriodInMonth() &&
                 left.getOpeningDate().equals(right.getOpeningDate()) &&
                 left.getBankId().equals(right.getBankId()) &&
                 left.getClientId().equals(right.getClientId())&&

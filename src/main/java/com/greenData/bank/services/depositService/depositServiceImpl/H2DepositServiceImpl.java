@@ -97,7 +97,7 @@ public class H2DepositServiceImpl implements IDepositService {
                 try {
                     if(client.satisfies(finalCommonSpecification)) finalDepositList.add(client);
                 } catch (Exception e) {
-                    //e.printStackTrace();
+                    //TODO прокинуть exception выше
                 }
             });
         } else {

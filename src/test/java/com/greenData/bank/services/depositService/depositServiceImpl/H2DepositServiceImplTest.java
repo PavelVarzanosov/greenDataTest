@@ -54,17 +54,19 @@ class H2DepositServiceImplTest {
     @BeforeEach
     void setUp() throws NotFoundException {
         MockitoAnnotations.initMocks(this);
-        client = clientService.saveClient("clientName", "shortClientName", "address", LegalForms.IP);
+        client = clientService.saveClient("clientName", "shortClientName", "address", LegalForms.LTD);
         bank = bankService.saveBank("bankName", 4);
-        deposit = depositService.saveDeposit(10, 12, new Date(), client.getClientId(), bank.getBankId());
-        deposit1 = depositService.saveDeposit(15, 12, new Date(), client.getClientId(), bank.getBankId());
-        deposit2 = depositService.saveDeposit(20, 6, new Date(), client.getClientId(), bank.getBankId());
-        deposit3 = depositService.saveDeposit(10, 3, new Date(), client.getClientId(), bank.getBankId());
+        deposit = depositService.saveDeposit(5, 12, new Date(), client.getClientId(), bank.getBankId());
+        deposit1 = depositService.saveDeposit(10, 6, new Date(), client.getClientId(), bank.getBankId());
+        deposit2 = depositService.saveDeposit(15, 12, new Date(), client.getClientId(), bank.getBankId());
+        deposit3 = depositService.saveDeposit(20, 3, new Date(), client.getClientId(), bank.getBankId());
     }
 
     @AfterEach
     void tearDown() {
         depositService.deleteAll();
+        clientService.deleteAll();
+        bankService.deleteAll();
     }
 
     @Test
@@ -76,6 +78,7 @@ class H2DepositServiceImplTest {
             assertEquals("Client or bank not found", exception.getMessage());
         }
     }
+
     @Test
     void testGetDepositById() throws NotFoundException {
 
@@ -131,10 +134,10 @@ class H2DepositServiceImplTest {
     @Test
     void testGetDepositsReverse() {
         ArrayList<Deposit> depositList = new ArrayList<>();
-        depositList.add(deposit);
-        depositList.add(deposit1);
-        depositList.add(deposit2);
         depositList.add(deposit3);
+        depositList.add(deposit2);
+        depositList.add(deposit1);
+        depositList.add(deposit);
         depositList.sort(Collections.reverseOrder());
         FilterDTO filterDTO = new FilterDTO( new ArrayList<>(), true, 0, 10);
 
@@ -149,8 +152,8 @@ class H2DepositServiceImplTest {
     @Test
     void testGetDepositsLimit() {
         ArrayList<Deposit> depositList = new ArrayList<>();
-        depositList.add(deposit3);
-        depositList.add(deposit2);
+        depositList.add(deposit);
+        depositList.add(deposit1);
         FilterDTO filterDTO = new FilterDTO( new ArrayList<>(), false, 0, 2);
 
         List<Deposit> getDeposits = depositService.getDeposits(filterDTO);
@@ -162,8 +165,8 @@ class H2DepositServiceImplTest {
     @Test
     void testGetDepositsOffset() {
         ArrayList<Deposit> depositList = new ArrayList<>();
-        depositList.add(deposit2);
         depositList.add(deposit1);
+        depositList.add(deposit2);
         FilterDTO filterDTO = new FilterDTO( new ArrayList<>(), false, 1, 2);
 
         List<Deposit> getDeposits = depositService.getDeposits(filterDTO);
@@ -175,15 +178,13 @@ class H2DepositServiceImplTest {
     @Test
     void testGetDepositsFilter() {
         ArrayList<Deposit> depositList = new ArrayList<>();
-        depositList.add(deposit3);
+        depositList.add(deposit1);
         ArrayList<FilterCondition> filterConditionList = new ArrayList<>();
         filterConditionList.add(new FilterCondition("percent", "10", Operator.EQUAL, ConcatenateType.OR));
-        filterConditionList.add(new FilterCondition("dateInMonth", "12", Operator.NOT_EQUAL, ConcatenateType.AND));
+        filterConditionList.add(new FilterCondition("periodInMonth", "12", Operator.NOT_EQUAL, ConcatenateType.AND));
         FilterDTO filterDTO = new FilterDTO(filterConditionList, false, 0, 3);
 
         List<Deposit> getDeposits = depositService.getDeposits(filterDTO);
-        System.out.println("getDepositsFilterTest get " + getDeposits.size());
-        System.out.println("getDepositsFilterTest " + depositList.size());
 
         assertEquals(depositList.get(0).getDepositId(), getDeposits.get(0).getDepositId());
     }
